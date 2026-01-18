@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飯田幸子 | 株式会社HappySmile | 組織変革・人財育成・企業研修</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fff;
+        }
+        
+        .page {
+            max-width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            page-break-after: always;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 50%, #34495e 100%);
+            color: white;
+            padding: 60px 50px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+        
+        .header-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-image {
+            position: relative;
+            z-index: 1;
+            margin-left: 40px;
+        }
+        
+        .profile-photo {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #d4af37;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+        
+        .header .name-en {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            letter-spacing: 4px;
+            color: #d4af37;
+        }
+        
+        .header .company {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            border-left: 4px solid #d4af37;
+            padding-left: 15px;
+        }
+        
+        .header .tagline {
+            font-size: 1.15rem;
+            font-weight: 300;
+            line-height: 1.8;
+            max-width: 650px;
+        }
+        
+        .container {
+            padding: 50px;
+        }
+        
+        .intro-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 40px;
+            border-radius: 12px;
+            border-left: 5px solid #d4af37;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(26, 35, 50, 0.1);
+        }
+        
+        .intro-section p {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #2c3e50;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(26, 35, 50, 0.15);
+            border-top: 4px solid #d4af37;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 18px rgba(26, 35, 50, 0.25);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 50px 0 30px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #d4af37;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #d4af37;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .strength-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .strength-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+            box-shadow: 0 2px 10px rgba(26, 35, 50, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .strength-card:hover {
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+            transform: translateX(3px);
+        }
+        
+        .strength-card h3 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .strength-card p {
+            color: #475569;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        .experience-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 15px rgba(160, 70, 111, 0.1);
+            border-left: 5px solid #d4af37;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+        }
+        
+        .experience-with-image {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+        
+        .experience-content {
+            flex: 1;
+        }
+        
+        .experience-image {
+            flex-shrink: 0;
+        }
+        
+        .experience-photo {
+            width: 220px;
+            height: 165px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 3px solid #d4af37;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .experience-card h3 {
+            color: #1e3a5f;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .experience-card .period {
+            color: #d4af37;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .experience-card .description {
+            color: #475569;
+            line-height: 1.9;
+            margin-bottom: 15px;
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        
+        .result-box::before {
+            content: '✓';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+        
+        .result-box .content {
+            padding-left: 40px;
+        }
+        
+        .training-themes {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 40px;
+            border-radius: 12px;
+            color: white;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .training-themes::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .training-themes h3 {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .theme-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #d4af37;
+        }
+        
+        .theme-item h4 {
+            color: #d4af37;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .theme-item p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .cert-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px 25px;
+            border-radius: 8px;
+            border-left: 3px solid #d4af37;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(26, 35, 50, 0.1);
+        }
+        
+        .cert-year {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            margin-right: 15px;
+            font-weight: 600;
+            min-width: 75px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .cert-name {
+            color: #475569;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .request-section {
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            border-left: 5px solid #d4af37;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .request-content {
+            flex: 1;
+        }
+        
+        .request-image {
+            flex-shrink: 0;
+        }
+        
+        .request-photo {
+            width: 340px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 3px solid #d4af37;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer .company-name {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #d4af37;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        /* 写真プレースホルダー */
+        .photo-placeholder {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        @media print {
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-content">
+                <h1>飯田 幸子</h1>
+                <div class="name-en">SACHIKO IIDA</div>
+                <div class="company">株式会社HappySmile 代表取締役</div>
+                <div class="tagline">組織変革・人財育成・企業研修講師<br>現場実践から生まれた「人が輝く組織づくり」のスペシャリスト</div>
+            </div>
+            <div class="header-image">
+                <img src="photo1.jpg" alt="飯田幸子" class="profile-photo">
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="intro-section">
+                <p>医療・不動産・サービス業界で培った現場実践の知見を活かし、企業研修講師として活動しております。離職率50％から0％への改革、年間240万円のコスト削減、加入率90％超の営業成果など、数値で証明された実績を基に、説得力のある研修を提供いたします。</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">50%→0%</div>
+                    <div class="stat-label">離職率改善実績<br>（3年間で達成）</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">200名+</div>
+                    <div class="stat-label">面接対応実績<br>（医療業界10年間）</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">240万円</div>
+                    <div class="stat-label">年間コスト削減<br>（求人広告費）</div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">講師としての3つの強み</h2>
+            
+            <div class="strength-grid">
+                <div class="strength-card">
+                    <h3>豊富な登壇実績</h3>
+                    <p>野村不動産プラウドオーナー様向け説明会講師として加入率90％超を実現。リクルートでは毎週末セミナー講師として登壇し、月間成約3億円を達成。</p>
+                </div>
+                <div class="strength-card">
+                    <h3>異業種ナレッジ統合力</h3>
+                    <p>ディズニーフィロソフィーを受講し、医療・不動産・サービス業界で展開。異業種の学びを実務に落とし込む独自の手法を提供します。</p>
+                </div>
+                <div class="strength-card">
+                    <h3>組織変革の実践者</h3>
+                    <p>離職率50％のクリニックを0％に改革した実務経験。理論ではなく、現場で成果を出した手法をお伝えします。</p>
+                </div>
+                <div class="strength-card">
+                    <h3>CS評価No.1の実績</h3>
+                    <p>NTTdocomoで店舗内CS評価No.1を維持し、関東応対コンテストに出場。顧客満足度向上の実践手法を提供します。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page">
+        <div class="container">
+            <h2 class="section-title">提供可能な研修テーマ</h2>
+            
+            <div class="training-themes">
+                <h3>5つの専門研修プログラム</h3>
+                <div class="theme-grid">
+                    <div class="theme-item">
+                        <h4>社長を巻き込む組織改革</h4>
+                        <p>トップの意識改革から始める組織変革。経営層と現場の橋渡し役として、理念浸透と実践を両立させる手法</p>
+                    </div>
+                    <div class="theme-item">
+                        <h4>人財育成とマネジメント</h4>
+                        <p>ディズニーフィロソフィーを基にした主体性を引き出すマネジメント手法とファシリテーション技術</p>
+                    </div>
+                    <div class="theme-item">
+                        <h4>顧客満足度向上</h4>
+                        <p>CS評価No.1維持のノウハウと関東応対コンテスト出場経験を活かした実践的な応対スキル</p>
+                    </div>
+                    <div class="theme-item">
+                        <h4>採用と定着の戦略</h4>
+                        <p>200名超の面接対応から得た採用要件定義手法と経営理念に沿った人財採用の実践方法</p>
+                    </div>
+                    <div class="theme-item">
+                        <h4>異業種ナレッジ活用</h4>
+                        <p>ディズニーフィロソフィーなど優れたナレッジを自社に落とし込む方法と業界横断的な学び</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">主な職務経歴</h2>
+            
+            <div class="experience-card">
+                <h3>医療法人社団 航正会 理事</h3>
+                <div class="period">2016年 〜 現在</div>
+                <div class="description">
+                    組織作りの立て直しのため、経営全般、人事・採用、労務管理、各種研修の企画・実施まで包括的に実施。10年間で延べ200名超の面接を対応し、経営理念に沿った採用と育成を実現。各ハラスメント研修、リスクマネジメント研修、マネジメント教育など組織の成長段階に応じた研修プログラムを企画・実施。
+                </div>
+                <div class="result-box">
+                    <div class="content">離職率50％→0％（3年間）| 年間求人広告費240万円削減 | 延べ200名超の面接対応</div>
+                </div>
+            </div>
+            
+            <div class="experience-card">
+                <div class="experience-with-image">
+                    <div class="experience-content">
+                        <h3>プレステージインターナショナル株式会社</h3>
+                        <div class="period">2014年 〜 2016年</div>
+                        <div class="description">
+                            野村不動産プラウドオーナー様向け説明会の講師を担当し、24時間駆けつけサービスの価値を分かりやすく伝達。山形県BPO拠点コールセンター立ち上げ時の研修担当として、研修資料作成・スタッフ教育を実施。
+                        </div>
+                        <div class="result-box">
+                            <div class="content">説明会講師として加入率90〜96％を実現 | 東京・大阪・名古屋でPR担当</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="experience-card">
+                <div class="experience-with-image">
+                    <div class="experience-content">
+                        <h3>株式会社リクルート SUUMOカウンター</h3>
+                        <div class="period">2012年 〜 2013年</div>
+                        <div class="description">
+                            新築マンションアドバイザーとして、週末ごとに「新築VS中古」「賃貸VS購入」などのセミナー講師を務める。渋谷店立ち上げメンバーとして店舗開設を推進。
+                        </div>
+                        <div class="result-box">
+                            <div class="content">毎週末セミナー講師（1日2回開催）| 月間成約3億円達成 | チームMVP受賞</div>
+                        </div>
+                    </div>
+                    <div class="experience-image">
+                        <img src="photo2.jpg" alt="SUUMOカウンター" class="experience-photo">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="experience-card">
+                <div class="experience-with-image">
+                    <div class="experience-content">
+                        <h3>株式会社NTTdocomo CS・ES担当</h3>
+                        <div class="period">2002年 〜 2011年</div>
+                        <div class="description">
+                            CS・ES担当としてスタッフ育成に従事。オリエンタルランドでディズニーフィロソフィーを受講し、その学びを店舗スタッフへ展開。この経験が組織変革の礎となり、その後全ての業界で一貫して活用。
+                        </div>
+                        <div class="result-box">
+                            <div class="content">店舗内CS評価No.1維持 | 関東応対コンテスト出場 | ディズニーフィロソフィー展開</div>
+                        </div>
+                    </div>
+                    <div class="experience-image">
+                        <img src="photo3.jpg" alt="ディズニーフィロソフィー" class="experience-photo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page">
+        <div class="container">
+            <h2 class="section-title">資格・認定</h2>
+            
+            <div class="cert-grid">
+                <div class="cert-item">
+                    <div class="cert-year">2017年</div>
+                    <div class="cert-name">日本医療事務協会検定試験合格</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-year">2017年</div>
+                    <div class="cert-name">日本医療事務協会レセプト講座修了</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-year">2016年</div>
+                    <div class="cert-name">三級ファイナンシャル・プランニング技能士</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-year">2011年</div>
+                    <div class="cert-name">TCカラーセラピートレーナー資格</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-year">2005年</div>
+                    <div class="cert-name">サービス介助士2級</div>
+                </div>
+            </div>
+            
+            <div class="request-section">
+                <div class="request-content">
+                    <h3 style="color: #2c3e50; font-size: 1.4rem; margin-bottom: 20px; font-weight: 600;">研修のご依頼について</h3>
+                    <p style="color: #4a4a4a; line-height: 2; font-size: 1.05rem;">
+                        各研修は貴社の課題や業界特性に合わせてカスタマイズいたします。理論と実践を融合させた研修スタイルで、受講者の心に響き、現場で即実践できる内容をお届けいたします。研修後のフォローアップ体制も整えておりますので、組織変革を継続的に支援させていただきます。
+                    </p>
+                </div>
+                <div class="request-image">
+                    <img src="photo4.jpg" alt="研修風景" class="request-photo">
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-content">
+                <div class="company-name">株式会社HappySmile</div>
+                <p>代表取締役 飯田幸子</p>
+                <p style="margin-top: 20px;">© 2026 HappySmile Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
