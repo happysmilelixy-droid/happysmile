@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>わたしの棚卸しダッシュボード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2efe9;
+    --card-bg:#ffffff;
+    --text:#2c2b29;
+    --muted:#6f6b64;
+    --border:#ddd7cc;
+    --accent:#ad4130;
+    --accent-soft:#f3e2dd;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans JP', sans-serif;
+    line-height:1.6;
+    padding:24px 16px 64px;
+  }
+
+  .container{
+    max-width:920px;
+    margin:0 auto;
+  }
+
+  h1{
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    font-size:1.6rem;
+    letter-spacing:0.02em;
+    margin:0 0 20px;
+    text-align:center;
+    color:var(--text);
+  }
+
+  /* --- tabs --- */
+  .tabs{
+    display:flex;
+    border-bottom:2px solid var(--border);
+    margin-bottom:24px;
+  }
+
+  .tab-btn{
+    flex:1;
+    padding:12px 8px;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:0.95rem;
+    font-weight:500;
+    background:transparent;
+    border:none;
+    border-bottom:3px solid transparent;
+    color:var(--muted);
+    cursor:pointer;
+    margin-bottom:-2px;
+  }
+
+  .tab-btn.active{
+    color:var(--accent);
+    border-bottom-color:var(--accent);
+    font-weight:700;
+  }
+
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+
+  .placeholder{
+    text-align:center;
+    color:var(--muted);
+    padding:64px 16px;
+    border:1px dashed var(--border);
+    border-radius:3px;
+    background:var(--card-bg);
+  }
+
+  /* --- cards --- */
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:3px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    padding:20px 20px 24px;
+    margin-bottom:20px;
+    position:relative;
+  }
+
+  .card-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .card-number{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.1rem;
+    color:var(--accent);
+    letter-spacing:0.05em;
+  }
+
+  .card-title{
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    font-size:1.15rem;
+    margin:0;
+    color:var(--text);
+  }
+
+  /* --- 01: weekday inputs --- */
+  .field-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:16px 20px;
+    margin-bottom:18px;
+  }
+
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .field label{
+    font-size:0.85rem;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+
+  .field .field-input{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  input[type="number"]{
+    width:72px;
+    padding:6px 8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.95rem;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+    border:1px solid var(--border);
+    border-radius:2px;
+    background:#fff;
+    color:var(--text);
+  }
+
+  input[type="number"]:focus{
+    outline:none;
+    border-color:var(--accent);
+  }
+
+  .unit{
+    font-size:0.85rem;
+    color:var(--muted);
+  }
+
+  .result-box{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    background:var(--accent-soft);
+    border-radius:3px;
+    padding:14px 16px;
+  }
+
+  .result-label{
+    font-size:0.9rem;
+    color:var(--text);
+  }
+
+  .result-value{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.8rem;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* --- 02: holidays --- */
+  .btn-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:10px 0 18px;
+  }
+
+  .choice-btn{
+    padding:9px 14px;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:0.88rem;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:2px;
+    color:var(--text);
+    cursor:pointer;
+  }
+
+  .choice-btn.selected{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+    font-weight:500;
+  }
+
+  .sub-label{
+    font-size:0.88rem;
+    color:var(--muted);
+    margin:16px 0 6px;
+  }
+
+  .summary-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-top:18px;
+  }
+
+  .summary-item{
+    flex:1;
+    min-width:160px;
+    background:var(--accent-soft);
+    border-radius:3px;
+    padding:12px 16px;
+  }
+
+  .summary-item .summary-label{
+    display:block;
+    font-size:0.82rem;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+
+  .summary-item .summary-value{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.4rem;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* --- 03: checkbox skills --- */
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:10px 16px;
+  }
+
+  .skill-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:6px 0;
+    border-bottom:1px solid var(--border);
+  }
+
+  .skill-item .skill-check{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-width:0;
+  }
+
+  .skill-item input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    accent-color:var(--accent);
+    flex-shrink:0;
+  }
+
+  .skill-item label{
+    font-size:0.86rem;
+    color:var(--text);
+    overflow-wrap:anywhere;
+  }
+
+  .skill-select{
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:0.8rem;
+    padding:4px 6px;
+    border:1px solid var(--border);
+    border-radius:2px;
+    background:#fff;
+    color:var(--text);
+    flex-shrink:0;
+  }
+
+  .skill-select[hidden]{ display:none; }
+
+  /* --- 04: AI / goal --- */
+  .subsection{
+    margin-bottom:22px;
+  }
+
+  .subsection:last-child{ margin-bottom:0; }
+
+  .subsection-title{
+    font-size:0.92rem;
+    font-weight:500;
+    margin-bottom:4px;
+    color:var(--text);
+  }
+
+  .name-input{
+    width:100%;
+    max-width:320px;
+    padding:8px 10px;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:0.92rem;
+    border:1px solid var(--border);
+    border-radius:2px;
+    background:#fff;
+    color:var(--text);
+  }
+
+  .name-input:focus{
+    outline:none;
+    border-color:var(--accent);
+  }
+
+  /* --- footer action --- */
+  .footer-action{
+    display:flex;
+    justify-content:center;
+    margin-top:8px;
+  }
+
+  .primary-btn{
+    padding:14px 40px;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:1rem;
+    font-weight:700;
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    border-radius:3px;
+    cursor:pointer;
+    box-shadow:0 1px 3px rgba(0,0,0,0.15);
+  }
+
+  .primary-btn:hover{
+    filter:brightness(0.95);
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>わたしの棚卸しダッシュボード</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="hearing">ヒアリング</button>
+    <button class="tab-btn" data-tab="result">結果</button>
+  </div>
+
+  <!-- ============ ヒアリング ============ -->
+  <div id="hearing" class="tab-panel active">
+
+    <!-- 01 平日の1日 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-number">01</span>
+        <h2 class="card-title">平日の1日</h2>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label for="sleep">睡眠</label>
+          <div class="field-input">
+            <input type="number" id="sleep" step="0.5" min="0" value="6.5">
+            <span class="unit">時間</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="work">本業（残業込み）</label>
+          <div class="field-input">
+            <input type="number" id="work" step="0.5" min="0" value="9.5">
+            <span class="unit">時間</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="commute">通勤（往復）</label>
+          <div class="field-input">
+            <input type="number" id="commute" step="0.5" min="0" value="1.5">
+            <span class="unit">時間</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="life">食事・入浴・身支度</label>
+          <div class="field-input">
+            <input type="number" id="life" step="0.5" min="0" value="2">
+            <span class="unit">時間</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="house">家事・育児</label>
+          <div class="field-input">
+            <input type="number" id="house" step="0.5" min="0" value="1.5">
+            <span class="unit">時間</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-box">
+        <span class="result-label">残り＝平日の自由時間</span>
+        <span class="result-value" id="weekdayFreeTime">3.0</span>
+        <span class="unit">時間</span>
+      </div>
+    </div>
+
+    <!-- 02 休日 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-number">02</span>
+        <h2 class="card-title">休日</h2>
+      </div>
+
+      <div class="sub-label">週に何日休みですか</div>
+      <div class="btn-group" id="holidayCountGroup">
+        <button class="choice-btn" data-value="1">週1日</button>
+        <button class="choice-btn" data-value="1.5">週1.5日</button>
+        <button class="choice-btn selected" data-value="2">週2日</button>
+        <button class="choice-btn" data-value="2.5">週2.5日</button>
+        <button class="choice-btn" data-value="3">週3日以上</button>
+      </div>
+
+      <div class="field">
+        <label for="holidayFreeTime">休日1日の自由時間</label>
+        <div class="field-input">
+          <input type="number" id="holidayFreeTime" step="0.5" min="0" value="6">
+          <span class="unit">時間</span>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-item">
+          <span class="summary-label">休日（月あたり）</span>
+          <span class="summary-value"><span id="holidayDaysPerMonth">8.7</span><span class="unit">日</span></span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">平日（月あたり）</span>
+          <span class="summary-value"><span id="weekdayDaysPerMonth">21.7</span><span class="unit">日</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 やったことがあるもの -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-number">03</span>
+        <h2 class="card-title">やったことがあるもの</h2>
+      </div>
+
+      <div class="skill-grid" id="skillGrid"></div>
+    </div>
+
+    <!-- 04 AIの使い方と、目標 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-number">04</span>
+        <h2 class="card-title">AIの使い方と、目標</h2>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">いまのAIの使い方に一番近いもの</div>
+        <div class="btn-group" id="aiUsageGroup">
+          <button class="choice-btn" data-value="1">触ったことがある</button>
+          <button class="choice-btn" data-value="2">調べもの・文章の相談</button>
+          <button class="choice-btn selected" data-value="3">業務で毎日のように使う</button>
+          <button class="choice-btn" data-value="4">AIに道具を作らせる</button>
+          <button class="choice-btn" data-value="5">業務そのものを作り替える</button>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">副業でいくら欲しいですか</div>
+        <div class="btn-group" id="incomeGoalGroup">
+          <button class="choice-btn" data-value="30000">月3万円</button>
+          <button class="choice-btn selected" data-value="50000">月5万円</button>
+          <button class="choice-btn" data-value="100000">月10万円</button>
+          <button class="choice-btn" data-value="200000">月20万円</button>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">お名前</div>
+        <input type="text" id="userName" class="name-input" placeholder="表示用のお名前">
+      </div>
+    </div>
+
+    <div class="footer-action">
+      <button class="primary-btn" id="showResultBtn">結果を見る</button>
+    </div>
+
+  </div>
+
+  <!-- ============ 結果 ============ -->
+  <div id="result" class="tab-panel">
+    <p class="placeholder">入力が終わったらここに結果が出ます</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  // ---- タブ切り替え ----
+  var tabButtons = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(name){
+    tabButtons.forEach(function(btn){
+      btn.classList.toggle('active', btn.dataset.tab === name);
+    });
+    tabPanels.forEach(function(panel){
+      panel.classList.toggle('active', panel.id === name);
+    });
+  }
+
+  tabButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      activateTab(btn.dataset.tab);
+    });
+  });
+
+  document.getElementById('showResultBtn').addEventListener('click', function(){
+    activateTab('result');
+  });
+
+  // ---- 01 平日の1日 ----
+  var weekdayIds = ['sleep', 'work', 'commute', 'life', 'house'];
+  var weekdayFreeTimeEl = document.getElementById('weekdayFreeTime');
+
+  function recalcWeekday(){
+    var sum = 0;
+    weekdayIds.forEach(function(id){
+      var v = parseFloat(document.getElementById(id).value);
+      if(isNaN(v)) v = 0;
+      sum += v;
+    });
+    var free = 24 - sum;
+    if(free < 0) free = 0;
+    weekdayFreeTimeEl.textContent = free.toFixed(1);
+  }
+
+  weekdayIds.forEach(function(id){
+    document.getElementById(id).addEventListener('input', recalcWeekday);
+  });
+
+  // ---- 02 休日 ----
+  var WEEKS_PER_MONTH = 4.35;
+  var holidayCountGroup = document.getElementById('holidayCountGroup');
+  var holidayDaysPerMonthEl = document.getElementById('holidayDaysPerMonth');
+  var weekdayDaysPerMonthEl = document.getElementById('weekdayDaysPerMonth');
+  var selectedHolidayCount = 2;
+
+  function recalcHolidays(){
+    var totalDaysPerMonth = 7 * WEEKS_PER_MONTH;
+    var holidayDaysPerMonth = selectedHolidayCount * WEEKS_PER_MONTH;
+    var weekdayDaysPerMonth = totalDaysPerMonth - holidayDaysPerMonth;
+    holidayDaysPerMonthEl.textContent = holidayDaysPerMonth.toFixed(1);
+    weekdayDaysPerMonthEl.textContent = weekdayDaysPerMonth.toFixed(1);
+  }
+
+  holidayCountGroup.querySelectorAll('.choice-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      holidayCountGroup.querySelectorAll('.choice-btn').forEach(function(b){
+        b.classList.remove('selected');
+      });
+      btn.classList.add('selected');
+      selectedHolidayCount = parseFloat(btn.dataset.value);
+      recalcHolidays();
+    });
+  });
+
+  recalcHolidays();
+
+  // ---- 03 やったことがあるもの ----
+  var skills = [
+    'Excel関数・データ集計', '資料作成（PowerPoint）', '文章・メールを書く', '見積・原価の計算',
+    '請求・経理まわり', '在庫・仕入の管理', '進行・納期の管理', '取引先との折衝',
+    '電話・来客対応', '後輩の指導', '採用・面接', '人前で話す',
+    '写真の編集', '動画の編集', 'デザイン・作図', 'SNS運用',
+    '簡単なHTML・コード', 'データ入力・整理', 'マニュアル作成', '翻訳・語学',
+    '接客・販売', 'クレーム対応', 'イベント運営', '経営・数値管理',
+    '業界特有の専門知識', '資格を持っている', '車の運転', '料理'
+  ];
+
+  var skillGrid = document.getElementById('skillGrid');
+
+  skills.forEach(function(name, i){
+    var item = document.createElement('div');
+    item.className = 'skill-item';
+
+    var checkId = 'skill_' + i;
+
+    var checkWrap = document.createElement('div');
+    checkWrap.className = 'skill-check';
+
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = checkId;
+
+    var label = document.createElement('label');
+    label.htmlFor = checkId;
+    label.textContent = name;
+
+    checkWrap.appendChild(checkbox);
+    checkWrap.appendChild(label);
+
+    var select = document.createElement('select');
+    select.className = 'skill-select';
+    select.hidden = true;
+    ['教えられる', 'やっている', 'かじった'].forEach(function(optLabel){
+      var opt = document.createElement('option');
+      opt.value = optLabel;
+      opt.textContent = optLabel;
+      if(optLabel === 'やっている') opt.selected = true;
+      select.appendChild(opt);
+    });
+
+    checkbox.addEventListener('change', function(){
+      select.hidden = !checkbox.checked;
+    });
+
+    item.appendChild(checkWrap);
+    item.appendChild(select);
+    skillGrid.appendChild(item);
+  });
+
+  // ---- 04 ボタン選択（AI利用・副業目標） ----
+  function setupSingleChoice(groupId){
+    var group = document.getElementById(groupId);
+    group.querySelectorAll('.choice-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        group.querySelectorAll('.choice-btn').forEach(function(b){
+          b.classList.remove('selected');
+        });
+        btn.classList.add('selected');
+      });
+    });
+  }
+
+  setupSingleChoice('aiUsageGroup');
+  setupSingleChoice('incomeGoalGroup');
+
+  // ---- 初期計算 ----
+  recalcWeekday();
+
+})();
+</script>
+
+</body>
+</html>
